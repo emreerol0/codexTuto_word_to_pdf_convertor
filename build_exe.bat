@@ -27,7 +27,7 @@ python -m pip install pyinstaller >> "%LOG_FILE%" 2>&1
 if errorlevel 1 goto :build_failed
 
 echo Running pyinstaller... >> "%LOG_FILE%"
-pyinstaller --noconfirm --clean --onefile --windowed ^
+python -m PyInstaller --noconfirm --clean --onefile --windowed ^
   --name WordToPdfConverter ^
   --distpath "%OUTPUT_DIR%" ^
   --hidden-import pythoncom ^

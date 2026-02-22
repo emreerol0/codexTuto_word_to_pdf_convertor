@@ -17,6 +17,7 @@ class BuildScriptTests(unittest.TestCase):
         self.assertIn('if "%KEEP_WINDOW_OPEN%"=="1" (', self.script)
 
     def test_keeps_win32com_packaging_flags(self):
+        self.assertIn('python -m PyInstaller --noconfirm --clean --onefile --windowed', self.script)
         self.assertIn('--hidden-import pythoncom', self.script)
         self.assertIn('--hidden-import pywintypes', self.script)
         self.assertIn('--collect-submodules win32com', self.script)
