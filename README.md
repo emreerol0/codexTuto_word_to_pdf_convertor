@@ -36,6 +36,18 @@ Press Enter to use the default output:
 
 `dist\WordToPdfConverter.exe`
 
+The build now writes a detailed log to `build.log` in the chosen output folder, prints the last log lines on failure, and pauses before closing so you can read errors.
+
+If build dependencies for `win32com` are missed, the script adds required hidden imports and searches both the chosen output folder and the default `dist` folder before reporting failure.
+
+Tip: run `build_exe.bat --no-pause` if you don't want it to pause at the end.
+
+Quick build-script checks:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
 ## Usage
 
 1. Click **Add Files** or **Add Folder**.
