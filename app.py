@@ -57,8 +57,10 @@ class App(tk.Tk):
         self.files: List[str] = []
         self.log_queue: "queue.Queue[str]" = queue.Queue()
         self.conversion_running = False
+        self.worker_thread: Optional[threading.Thread] = None
 
         self._build_ui()
+        self.protocol("WM_DELETE_WINDOW", self._on_close)
         self.after(120, self._drain_log_queue)
 
     def _build_ui(self) -> None:
@@ -174,8 +176,17 @@ class App(tk.Tk):
         self.conversion_running = True
         self.convert_btn.configure(state="disabled")
 
-        worker = threading.Thread(target=self._convert_worker, args=(tasks,), daemon=True)
-        worker.start()
+        self.worker_thread = threading.Thread(target=self._convert_worker, args=(tasks,))
+        self.worker_thread.start()
+
+    def _on_close(self) -> None:
+        if self.conversion_running:
+            messagebox.showwarning(
+                "Conversion in progress",
+                "Please wait for the current conversion to finish before closing the app.",
+            )
+            return
+        self.destroy()
 
     def _prompt_save_paths(self) -> Optional[List[ConversionTask]]:
         tasks: List[ConversionTask] = []
