@@ -1,20 +1,25 @@
 # Word to PDF Converter (Windows)
 
-A Windows desktop app that converts `.doc` and `.docx` files to PDF using Microsoft Word automation.
+This is a small Windows desktop utility that converts Microsoft Word files (`.doc` and `.docx`) into PDF files.
 
-## Features
+## Why this project exists
 
-- Rich GUI queue for multiple documents
-- Add files or load an entire folder
-- Remove selected entries or clear the queue
-- Uses the Windows **Save As** dialog for each output PDF
-- Activity log and progress bar
-- Packaged as a single executable with PyInstaller
+This repository was created as a practical experiment to see how Codex works in a real coding workflow: generating code, refining behavior, and iterating from feedback.
 
-## Important requirement
+## How the application works
 
-This app uses Microsoft Word COM automation (`win32com`).
-**Microsoft Word must be installed on the machine where conversion runs.**
+1. You start the app (`app.py` or the packaged `.exe`).
+2. You add one or more Word files with **Add Files**, or load all supported files from a directory with **Add Folder**.
+3. The app keeps selected files in a queue visible in the interface.
+4. When you press **Convert**, each file is opened through Microsoft Word automation (`win32com`).
+5. For every source file, Windows shows a **Save As** dialog so you choose where the output PDF will be written.
+6. The app updates progress and writes status messages to the activity log until all queued files finish.
+
+## Requirements
+
+- Windows
+- Microsoft Word installed (required for COM automation)
+- Python 3.11+ (only if running from source)
 
 ## Run from source
 
@@ -23,7 +28,7 @@ python -m pip install -r requirements.txt
 python app.py
 ```
 
-## Build single executable (Windows)
+## Build an executable (Windows)
 
 Run:
 
@@ -31,16 +36,16 @@ Run:
 build_exe.bat
 ```
 
-The script prompts for an output folder (for example your Downloads folder).
-Press Enter to use the default output:
+The build script:
 
-`dist\WordToPdfConverter.exe`
+- installs dependencies from `requirements.txt`
+- installs PyInstaller
+- builds a single-file Windows executable named `WordToPdfConverter.exe`
+- writes build output and errors to `build.log` in your selected output directory
 
-If build dependencies for `win32com` are missed, the script now adds the required hidden imports and searches both the chosen output folder and the default `dist` folder before reporting failure.
+## Typical usage flow
 
-## Usage
-
-1. Click **Add Files** or **Add Folder**.
+1. Add files/folder.
 2. Click **Convert**.
-3. For each input file, choose destination in the Windows **Save As** dialog.
-4. Wait for progress completion and success message.
+3. Choose PDF destinations in the Save As dialogs.
+4. Wait for completion confirmation.
